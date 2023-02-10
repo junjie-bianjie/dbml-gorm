@@ -1,4 +1,4 @@
-# DBML parser for Go
+# DBML parser for Gorm
 
 DBML-go is a Go parser for [DBML](https://www.dbml.org) syntax.
 
