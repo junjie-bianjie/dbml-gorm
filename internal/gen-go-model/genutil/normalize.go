@@ -4,8 +4,9 @@ import "strings"
 
 // NormalizeTypeName return name of model type, which normalize
 // eg:
+//
 //	users => User
-// 	categories => category
+//	categories => category
 func NormalizeTypeName(s string) string {
 	s1 := strings.ReplaceAll(s, " ", "_")
 	if strings.HasSuffix(s1, "us") {
@@ -38,7 +39,15 @@ func NormalLizeGoName(s string) string {
 	return GoInitialismCamelCase(Normalize(s))
 }
 
-//NormalizeGoTypeName return Normalize for Go Type Name
+// NormalizeGoTypeName return Normalize for Go Type Name
 func NormalizeGoTypeName(s string) string {
-	return GoInitialismCamelCase(NormalizeTypeName(s))
+	return goCamelCase(s)
+	//return GoInitialismCamelCase(NormalizeTypeName(s))
+}
+
+func FirstLetterLower(s string) string {
+	runes := []rune(s)
+	firstLetter := runes[0]
+	otherLetter := runes[1:]
+	return strings.ToLower(string(firstLetter)) + string(otherLetter)
 }

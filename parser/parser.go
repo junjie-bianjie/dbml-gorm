@@ -244,6 +244,7 @@ func (p *Parser) parseTable() (*core.Table, error) {
 		switch p.token {
 		case token.STRING, token.IDENT:
 			table.As = p.lit
+			table.Name = p.lit
 		default:
 			return nil, p.expect("as NAME")
 		}
