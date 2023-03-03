@@ -63,6 +63,9 @@ func Initialism(s string) string {
 	runes := []rune(s)
 
 	w, i := 0, 0 //start scan
+	if len(runes) == 1 {
+		return string(runes)
+	}
 	for i+1 < len(runes) {
 		// if the word start
 		i++

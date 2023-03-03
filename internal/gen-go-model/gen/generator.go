@@ -131,7 +131,8 @@ func (g *generator) genTable(table core.Table) error {
 
 	f.Type().Id(tableMetadataType).StructFunc(func(group *jen.Group) {
 		for _, column := range table.Columns {
-			group.Id(genutil.NormalLizeGoName(column.Name)).String()
+			temp := genutil.NormalLizeGoName(column.Name)
+			group.Id(temp).String()
 		}
 	})
 

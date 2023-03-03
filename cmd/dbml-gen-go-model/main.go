@@ -11,8 +11,8 @@ func main() {
 
 	var (
 		from             = "database.dbml"
-		out              = "model"
-		gopackage        = "model"
+		out              = "entity"
+		gopackage        = "entity"
 		fieldtags        = []string{"gorm", "json", "mapstructure"}
 		shouldGenTblName = false
 		rememberAlias    = false
