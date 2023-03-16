@@ -110,7 +110,8 @@ func (g *generator) genTable(table core.Table) error {
 			for _, t := range g.fieldtags {
 				tagName := strings.TrimSpace(t)
 				if tagName == "gorm" {
-					gotags[tagName] = "column:" + columnOriginName
+					gormTag := g.setGormTag(column)
+					gotags[tagName] = "column:" + columnOriginName + gormTag
 				} else {
 					gotags[tagName] = columnOriginName
 				}
@@ -169,6 +170,22 @@ func (g *generator) genTable(table core.Table) error {
 	return f.Save(fmt.Sprintf("%s/%s.go", g.out, genutil.Normalize(table.Name)))
 }
 
+func (g *generator) setGormTag(column core.Column) string {
+	var pkTag string
+	if column.Settings.PK {
+		pkTag += ";primaryKey"
+	}
+	if column.Type == "datetime" {
+		if column.Name == "created_at" {
+			pkTag += ";autoCreateTime"
+		}
+		if column.Name == "updated_at" {
+			pkTag += ";autoUpdateTime"
+		}
+	}
+	return pkTag
+}
+
 const primeTypePattern = `^(\w+)(\(d+\))?`
 
 var (
@@ -179,8 +196,8 @@ var (
 		"int16":      jen.Int16(),
 		"int32":      jen.Int32(),
 		"smallint":   jen.Int16(),
-		"tinyint":    jen.Int(),
 		"tinyint(1)": jen.Bool(),
+		"tinyint":    jen.Int(),
 		"longtext":   jen.String(),
 		"json":       jen.String(),
 		"int64":      jen.Int64(),
@@ -206,6 +223,9 @@ var (
 
 func (g *generator) getJenType(s string) (jen.Code, bool) {
 	m := regexType.FindStringSubmatch(s)
+	if s == "tinyint(1)" {
+		m[1] = "tinyint(1)"
+	}
 	if len(m) >= 2 {
 		// lookup for builtin type
 		if t, ok := builtinTypes[m[1]]; ok {
