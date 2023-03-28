@@ -202,6 +202,7 @@ var (
 		"json":       jen.String(),
 		"int64":      jen.Int64(),
 		"bigint":     jen.Int64(),
+		"decimal":    jen.Id("decimal.Decimal"),
 		"uint":       jen.Uint(),
 		"uint8":      jen.Uint8(),
 		"uint16":     jen.Uint16(),
